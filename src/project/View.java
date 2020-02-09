@@ -18,9 +18,9 @@ public class View {
         System.out.println(message);
     }
 
-    public void printHistory(ArrayList<Integer> list){
+   /* public void printHistory(ArrayList<Integer> list){
         for(int num : list)
             System.out.print(num + ", ");
-    }
+    }*/
 
 }

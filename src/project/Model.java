@@ -51,4 +51,12 @@ public class Model {
     public int getRandNum() {
         return randNum;
     }
+
+    public void addNumToHistory(int num){
+        numHistory.add(num);
+    }
+
+    public void setNumHistory(ArrayList<Integer> numHistory) {
+        this.numHistory = numHistory;
+    }
 }

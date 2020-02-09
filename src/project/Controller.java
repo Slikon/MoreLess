@@ -1,54 +1,57 @@
 package project;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Controller {
     private View view;
     private Model model;
 
-    public Controller(Model model, View view){
+    public Controller(View view, Model model) {
         this.model = model;
         this.view = view;
     }
 
-    public void execute(){
-        Scanner sc = new Scanner(System.in);
-        scanMinMax(sc);
-        model.setRandNum((int) Math.random()*(model.max-model.min) + model.min);
-        view.printMessge(view.gameStarted);
-        while (!model.gameWon()){
-            view.printMessge(view.giveNum);
-            model.setCurrNum(sc.nextInt());
-            if (model.numIsValid(model.getCurrNum())){
-                if (model.gameWon()){
-                    model.numHistory.add(model.getCurrNum());
-                    view.printMessge(view.gameFinished);
-                }
-                if (model.getCurrNum() > model.getRandNum()){
-                    view.printMessge(view.less);
-                    model.setMax(model.getCurrNum());
-                    model.numHistory.add(model.getCurrNum());
-                }
-                else if (model.getCurrNum() < model.getRandNum()){
-                    view.printMessge(view.more);
-                    model.setMin(model.getCurrNum());
-                    model.numHistory.add(model.getCurrNum());
+    public void runApp() {
+        Scanner scanner = new Scanner(System.in);
+        startPlay(scanner);
+        scanner.close();
+    }
+
+    public void startPlay(Scanner scanner) {
+        view.startGame();
+
+        model.setNumbersHistory(new ArrayList<>());
+        model.setExpectedNumber((int) (Math.random() * 100));
+        model.setMin(0);
+        model.setMax(100);
+
+        while (!model.isExpected()) {
+            view.enterYouNumber();
+            model.setCurrentNumber(scanner.nextInt());
+
+            if (model.numberIsValid(model.getCurrentNumber())) {
+                if (model.isExpected()) {
+                    model.addNumberToHistory(model.getCurrentNumber());
+                    view.numberIsExpected(model.getCurrentNumber());
+                } else {
+                    if (model.getCurrentNumber() < model.getExpectedNumber()) {
+                        view.numberIsUnexpected();
+                        view.isLower(model.getCurrentNumber());
+                    } else {
+                        view.numberIsUnexpected();
+                        view.isHigher(model.getCurrentNumber());
+                    }
+                    model.isLowerThenExpected();
                 }
             }
             else{
-                view.printMessge(view.incorrectNum);
+                view.numberIsOutOfRange();
             }
+            view.spacer();
         }
-        //view.printHistory(model.numHistory);
-        view.printMessge(view.gameFinished);
-        sc.close();
 
-    }
-
-    private void scanMinMax(Scanner sc) {
-        view.printMessge(view.giveMin);
-        model.setMin(sc.nextInt());
-        view.printMessge(view.giveMax);
-        model.setMax(sc.nextInt());
+        view.showHistoryOfNumbers(model.getNumbersHistory());
+        view.endGame();
     }
 }
