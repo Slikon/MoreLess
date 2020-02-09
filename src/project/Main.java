@@ -3,7 +3,9 @@ package project;
 public class Main {
 
     public static void main(String[] args) {
-	// write your code here
-        System.out.println("Hello World!");
+	View view =  new View();
+	Model model = new Model();
+	Controller controller = new Controller(new Model(), new View());
+	controller.execute();
     }
 }
