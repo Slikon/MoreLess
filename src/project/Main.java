@@ -6,6 +6,6 @@ public class Main {
 	// write your code here
        Model model = new Model();
        View view =  new View();
-       Controller controller = new Controller(new View(), new Model());
+       Controller controller = new Controller(new Model(), new View());
     }
 }
